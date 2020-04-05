@@ -1,0 +1,12 @@
+{
+    "name": "sofiadb/composer",
+    "authors": [
+        {
+            "name": "SofiaBarreiro",
+            "email": "barreirosofia@hotmail.com"
+        }
+    ],
+    "require": {
+        "ikoene/marvel-api-client": "^0.0.5"
+    }
+}
