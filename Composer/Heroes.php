@@ -25,25 +25,28 @@ class Heroes extends Characters{
         $response = $client->getCharacters($characterFilter);
         $character = $response->getData()->get(0);
 
-        echo '<p><strong>First ' . $character->getComics()->getReturned() . ' comics: </strong></p>';
+        echo '<p>First ' . $character->getComics()->getReturned() . ' comics  of' . $name .'</p>';
+        echo '<p>'; 
         foreach ($character->getComics()->getItems() as $comic) {
-            echo '<p>' . $comic->getName() . '<p>';
+            echo $comic->getName() . '<br>';
         }
+        echo "</p>"; 
+
     }
 
 
     public function getDataCharacter(){
 
         echo '--------------------------------------';
-        echo '<p><strong>Name</strong>: ' . $this->name . '</p>';
+        echo '<p>Name: ' . $this->name . '</p>';
         if($this->description == ""){
             
-        echo '<p><strong>Descripcion</strong>: ' . 'No data' .'</p>'; 
+        echo '<p>Descripcion: ' . 'No data' .'</p>'; 
                     
         }else{
-        echo '<p><strong>Descripcion</strong>: ' . $this->description .'</p>'; 
+        echo '<p>Descripcion: ' . $this->description .'</p>'; 
         }
-        echo '<p><strong>Type</strong>: ' . $this->type . '</p>'; 
+        echo '<p>Type: ' . $this->type . '</p>'; 
         echo '--------------------------------------';
 
 
