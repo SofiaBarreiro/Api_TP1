@@ -36,8 +36,11 @@ public function getListCharacters(){
     echo '<p>';
     foreach ($this->characters->getData()->getResults() as $character) {
         echo $character->getName() . "<br>";
+        echo $character->getDescription() . "<br>";
+
     }
     echo   '</p>';
+
 
 }
 

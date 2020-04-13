@@ -1,66 +1,85 @@
 <?php
 
+use ikoene\Marvel\Client;
 
-require_once dirname(__DIR__) . '/Composer/vendor/autoload.php';
-require __DIR__. '/MarvelCh.php';
+require __DIR__ . '/MarvelCh.php';
 require __DIR__ . '/Heroes.php';
 require __DIR__ . '/CharacterLists.php';
+require __DIR__ . '/functionCharacter.php';
+require __DIR__ . '/comics.php';
 
 
-
-use ikoene\Marvel\Client;
-use ikoene\Marvel\Entity\CharacterList;
-use ikoene\Marvel\Entity\ComicSummary;
-use ikoene\Marvel\Entity\CharacterFilter;
-use ikoene\Marvel\DataContainer;
-
+require_once dirname(__DIR__) . '/Composer/vendor/autoload.php';
 
 
 $client = new Client('d6133b5fc7e74e066a6267a4cd88826b', '8d95dad8d71c28d4f58203e81aa6295b45c25d63');
-print ("<h2 style='text-align: center;'>Marvel's data base</h2>"); 
+print("<h2 style='text-align: center;'>Marvel's data base</h2>");
 
 
-
-$characterList = new CharacterLists($client);
-$characterList->getListCharacters();
-
+$request_Method = $_SERVER["REQUEST_METHOD"];
+$path_info = $_SERVER["PATH_INFO"];
 
 
+$filter = new functionsCh($client);
 
-$characterFilter = new CharacterFilter();
+switch ($path_info) {
 
-$characterFilter->setName('Iron man');
-$response = $client->getCharacters($characterFilter);
-$character = $response->getData()->get(0);
-$captainMarvel = new Heroes($character->getName(),$character->getDescription(), "Heroe");
-$captainMarvel->getDataCharacter();
+    case '/Heroe':
 
 
-$characterFilter->setName('Wasp');
-$response = $client->getCharacters($characterFilter);
-$character = $response->getData()->get(0);
-$captainMarvel = new Heroes($character->getName(),$character->getDescription(), "Heroe");
-$captainMarvel->getDataCharacter();
+        if (isset($_GET['name'])) {
+
+            $name = $_GET['name'];
+            $response = $filter->setCharacterByFilter($name);
+            $heroe = new Heroes($response->getName(), $response->getDescription(), "Heroe");
+            echo $heroe->name;
+            echo $heroe->description;
+        }else{
+
+        /*
+        if ((isset($_POST['name']) && (isset($_POST['description'])){
+
+            $name = $_POST['name'];
+            $description = $_POST['description'];
+            $type = $_POST['type'];
+
+        break;
+        }else{
+
+            echo 'Method not allowed';
+        }
+
+        */
+        }
+
+    break;
+    case '/Comics':
+        if (isset($_GET['name'])) {
+        
+            $name = $_GET['name'];
+            $response = $filter->setCharacterByFilter($name);        
+            $comicHeroe = new Comics($response);
+            $comicHeroe->getStories();
+        }else{
+
+            echo 'Method not allowed';
+
+        }
+    break;
+    case '/ListHeroes':
+        if($request_Method == 'GET'){
 
 
-$characterFilter->setName('Spider-Man');
-$response = $client->getCharacters($characterFilter);
-$character = $response->getData()->get(0);
-$captainMarvel = new Heroes($character->getName(),$character->getDescription(), "Heroe");
-$captainMarvel->getDataCharacter();
+        $characterList = new CharacterLists($client);
+        $characterList->getListCharacters();
 
+        }else{
 
-$characterFilter->setName('Thor');
-$response = $client->getCharacters($characterFilter);
-$character = $response->getData()->get(0);
-$captainMarvel = new Heroes($character->getName(),$character->getDescription(), "Heroe");
-$captainMarvel->getDataCharacter();
+            echo 'Method not allowed';
 
+        }
 
-$characterFilter->setName('Hulk');
-$response = $client->getCharacters($characterFilter);
-$character = $response->getData()->get(0);
-$captainMarvel = new Heroes($character->getName(),$character->getDescription(), "Heroe");
-$captainMarvel->getDataCharacter();
+        break;
 
-Heroes::getStories('Spider-man', $client);
+    
+}
