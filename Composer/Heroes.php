@@ -14,7 +14,19 @@ class Heroes extends MarvelCh{
 
     }      
 
-       
+    function Save($cadena){
+
+
+            $gestor = fopen('heroes.json', 'a+');
+            echo $gestor;
+
+            fwrite($gestor, $cadena . ",");
+
+
+        
+
+    }
+    
     
 }
 

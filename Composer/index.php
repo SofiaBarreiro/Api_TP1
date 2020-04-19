@@ -22,36 +22,43 @@ $path_info = $_SERVER["PATH_INFO"];
 
 $filter = new functionsCh($client);
 
+
 switch ($path_info) {
 
     case '/Heroe':
 
 
         if (isset($_GET['name'])) {
-
             $name = $_GET['name'];
             $response = $filter->setCharacterByFilter($name);
             $heroe = new Heroes($response->getName(), $response->getDescription(), "Heroe");
             echo $heroe->name;
             echo $heroe->description;
         }else{
+            echo 'paso por aca';
 
-        /*
-        if ((isset($_POST['name']) && (isset($_POST['description'])){
+            $name = $_POST['name'] ??null;
+            $description = $_POST['description'] ?? null;
+            $type = $_POST['type'] ?? null;
 
-            $name = $_POST['name'];
-            $description = $_POST['description'];
-            $type = $_POST['type'];
 
-        break;
+        if (isset($_POST['name']) && isset($_POST['description']) ){
+
+            $heroe = new Heroes($name, $description, "Heroe");
+
+            $cadena = json_encode($heroe);
+
+            echo $cadena;
+
+            $heroe->Save($cadena);
+
+
         }else{
 
             echo 'Method not allowed';
         }
 
-        */
-        }
-
+    }
     break;
     case '/Comics':
         if (isset($_GET['name'])) {
@@ -83,3 +90,4 @@ switch ($path_info) {
 
     
 }
+
